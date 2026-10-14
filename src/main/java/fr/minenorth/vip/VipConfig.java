@@ -29,7 +29,7 @@ public final class VipConfig {
         public Map<String, Double> avantages = new LinkedHashMap<>();
     }
 
-    public String _aide = "Un grade se donne avec /grade donner <joueur> <grade> [jours]. Avantages : casinoMax = multiplicateur des mises maximales du casino ; remise = pourcentage de réduction sur les achats (boutiques, véhicules, assurance, permis) ; casinoVip = 1 : accès à la machine à sous rouge ; imprimanteOr = 1 : accès à l'imprimante dorée. Rechargez avec /grade recharger.";
+    public String _aide = "Un grade se donne avec /grade donner <joueur> <grade> [jours]. Avantages : casinoMax = multiplicateur des mises maximales du casino ; remise = pourcentage de réduction sur les achats (boutiques, véhicules, assurance, permis) ; casinoVip = 1 : accès à la machine à sous VIP (dorée) ; imprimanteOr = 1 : accès à l'imprimante dorée. Rechargez avec /grade recharger.";
     public List<Grade> grades = new ArrayList<>();
 
     public static VipConfig get() { return current; }
