@@ -15,7 +15,8 @@ import java.util.Map;
 
 /**
  * config/minenorth_vip.json (créé au premier démarrage). Chaque grade a un préfixe de nom (codes § acceptés) et des avantages :
- * « casinoMax » = multiplicateur des mises maximales au casino (1 = pas de changement). Les autres mods lisent les avantages par nom.
+ * « casinoMax » = multiplicateur des mises maximales au casino (1 = pas de changement) ; « remise » = % de réduction sur les achats.
+ * Les autres mods lisent les avantages par nom.
  */
 public final class VipConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
@@ -28,7 +29,7 @@ public final class VipConfig {
         public Map<String, Double> avantages = new LinkedHashMap<>();
     }
 
-    public String _aide = "Un grade se donne avec /grade donner <joueur> <grade> [jours]. Avantages : casinoMax = multiplicateur des mises maximales du casino. Rechargez avec /grade recharger.";
+    public String _aide = "Un grade se donne avec /grade donner <joueur> <grade> [jours]. Avantages : casinoMax = multiplicateur des mises maximales du casino ; remise = pourcentage de réduction sur les achats (boutiques, véhicules, assurance, permis) ; casinoVip = 1 : accès à la machine à sous rouge ; imprimanteOr = 1 : accès à l'imprimante dorée. Rechargez avec /grade recharger.";
     public List<Grade> grades = new ArrayList<>();
 
     public static VipConfig get() { return current; }
@@ -43,11 +44,16 @@ public final class VipConfig {
         VipConfig c = new VipConfig();
         Grade vip = new Grade();
         vip.avantages.put("casinoMax", 2.0);
+        vip.avantages.put("remise", 10.0);
+        vip.avantages.put("casinoVip", 1.0);
         Grade plus = new Grade();
         plus.id = "vip_plus";
         plus.nom = "VIP+";
         plus.prefixe = "§b[VIP+] §r";
         plus.avantages.put("casinoMax", 5.0);
+        plus.avantages.put("remise", 20.0);
+        plus.avantages.put("casinoVip", 1.0);
+        plus.avantages.put("imprimanteOr", 1.0);
         c.grades.add(vip);
         c.grades.add(plus);
         return c;
