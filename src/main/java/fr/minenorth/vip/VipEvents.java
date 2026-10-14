@@ -48,6 +48,25 @@ public final class VipEvents {
         p.refreshTabListName();
     }
 
+    /** Donne un grade (jours <= 0 : permanent) ; prévient le joueur s'il est connecté et met à jour son nom. Utilisé par /grade et le panneau admin. */
+    public static void grant(net.minecraft.server.MinecraftServer s, java.util.UUID id, VipConfig.Grade g, int days) {
+        long expiry = days <= 0 ? 0 : System.currentTimeMillis() + days * 86_400_000L;
+        VipData.get(s).set(id, g.id, expiry);
+        ServerPlayer p = s.getPlayerList().getPlayer(id);
+        if (p != null) {
+            refresh(p);
+            p.sendSystemMessage(Component.literal("§6Vous avez reçu le grade §e" + g.nom + "§6 (" + until(expiry) + ")."));
+        }
+    }
+
+    /** Retire le grade ; faux si le joueur n'en avait pas. */
+    public static boolean revoke(net.minecraft.server.MinecraftServer s, java.util.UUID id) {
+        boolean had = VipData.get(s).remove(id);
+        ServerPlayer p = s.getPlayerList().getPlayer(id);
+        if (had && p != null) refresh(p);
+        return had;
+    }
+
     private static String until(long expiry) {
         return expiry <= 0 ? "permanent" : "jusqu'au " + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(expiry));
     }
@@ -67,8 +86,7 @@ public final class VipEvents {
                 .then(Commands.literal("retirer")
                         .then(Commands.argument("joueur", EntityArgument.player()).executes(c -> {
                             ServerPlayer p = EntityArgument.getPlayer(c, "joueur");
-                            boolean had = VipData.get(p.server).remove(p.getUUID());
-                            refresh(p);
+                            boolean had = revoke(p.server, p.getUUID());
                             c.getSource().sendSuccess(() -> Component.literal(had ? "§aGrade retiré à " + p.getGameProfile().getName() + "." : "§7" + p.getGameProfile().getName() + " n'avait pas de grade."), true);
                             return had ? 1 : 0;
                         })))
@@ -101,10 +119,8 @@ public final class VipEvents {
             src.sendFailure(Component.literal("Grade inconnu : " + id + " (voir /grade liste)."));
             return 0;
         }
+        grant(p.server, p.getUUID(), g, days);
         long expiry = days <= 0 ? 0 : System.currentTimeMillis() + days * 86_400_000L;
-        VipData.get(p.server).set(p.getUUID(), g.id, expiry);
-        refresh(p);
-        p.sendSystemMessage(Component.literal("§6Vous avez reçu le grade §e" + g.nom + "§6 (" + until(expiry) + ")."));
         src.sendSuccess(() -> Component.literal("§aGrade " + g.nom + " donné à " + p.getGameProfile().getName() + " (" + until(expiry) + ")."), true);
         return 1;
     }

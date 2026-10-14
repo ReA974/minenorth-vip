@@ -9,6 +9,9 @@ Grades VIP attribués **par commande** (il n'y a pas de commande `/vip`), avec p
 - `/grade liste` : grades de la config et joueurs gradés.
 - `/grade recharger` : relit `config/minenorth_vip.json`.
 
+## Panneau admin
+Si `minenorth_admin` est installé, un onglet **Grade** apparaît dans la fiche joueur (donner / changer / renouveler / retirer, avec durée en jours). Même effet que `/grade`.
+
 ## Configuration `config/minenorth_vip.json`
 Chaque grade : `id`, `nom`, `prefixe` (codes `§` acceptés, affiché dans le chat et la liste des joueurs), `avantages` (nom -> valeur).
 Par défaut : `vip` (`casinoMax` x2) et `vip_plus` (`casinoMax` x5).
