@@ -1,0 +1,31 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All Rights Reserved - MineNorthRP"
+
+[[mods]]
+modId="minenorthvip"
+version="1.0.0"
+displayName="MineNorth VIP"
+authors="MineNorth RP"
+description='''Grades VIP MineNorth RP : attribues par commande (/grade), avec prefixe de nom et avantages lus par les autres mods (config/minenorth_vip.json).'''
+
+[[dependencies.minenorthvip]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.minenorthvip]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.21)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.minenorthvip]]
+modId="minenorthapi"
+mandatory=true
+versionRange="[1.1.0,2)"
+ordering="AFTER"
+side="BOTH"
